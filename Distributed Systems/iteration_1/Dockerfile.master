@@ -1,8 +1,0 @@
-# Dockerfile.master
-FROM python:3.11-slim
-WORKDIR /app
-COPY master.py /app/master.py
-RUN pip install --no-cache-dir flask requests
-ENV PYTHONUNBUFFERED=1
-EXPOSE 5000
-CMD ["python", "master.py"]
