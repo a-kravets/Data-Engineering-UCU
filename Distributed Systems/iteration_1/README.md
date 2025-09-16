@@ -10,6 +10,8 @@ The Replicated Log has the following deployment architecture: one Master and any
 * GET method: returns all replicated messages from the in-memory list
 * POST /replicate: registers secondary servers with the Matster so the latter knows where to send a message (POST)
 
+<img loading="lazy" src="iteration_1.png" alt="image_name png" />
+
 **Properties and assumptions:**
 * after each POST request, the message is replicated on every Secondary server
 * Master ensures that Secondaries have received a message via ACK
