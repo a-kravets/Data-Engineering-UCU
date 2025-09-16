@@ -8,7 +8,7 @@ The Replicated Log has the following deployment architecture: one Master and any
 
 **Secondary exposes a simple  HTTP server with:**
 * GET method: returns all replicated messages from the in-memory list
-* POST /replicate: registers secondary servers with the Matster so the latter knows where to send a message (POST)
+* POST /replicate: automatically registers secondary servers with the Matster so the latter knows where to send a message (POST)
 
 <img loading="lazy" src="iteration_1.png" alt="image_name png" />
 
