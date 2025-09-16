@@ -34,21 +34,8 @@ def register_secondary():
         secondaries[sid] = url
     app.logger.info(f"Registered secondary {sid} -> {url}")
     return jsonify({"status": "registered"}), 200
-
-'''
-@app.route("/unregister", methods=["POST"])
-def unregister_secondary():
-    data = request.get_json() or {}
-    sid = data.get("id")
-    if not sid:
-        return jsonify({"error": "id required"}), 400
-    with secondaries_lock:
-        secondaries.pop(sid, None)
-    app.logger.info(f"Unregistered secondary {sid}")
-    return jsonify({"status": "unregistered"}), 200
-'''
     
-@app.route("/append", methods=["POST"])
+@app.route("/", methods=["POST"])
 def append_message():
     """
     Client -> POST /append  JSON: {"message": "..."}
@@ -81,7 +68,7 @@ def append_message():
             else:
                 results[sid] = {"status": "error", "code": r.status_code, "body": r.text}
                 app.logger.error(f"Non-200 from {sid}: {r.status_code} {r.text}")
-                # For this exercise (perfect link), we consider this a failure but proceed.
+                # consider this a failure but proceed.
         except requests.RequestException as e:
             results[sid] = {"status": "error", "error": str(e)}
             app.logger.error(f"Failed to replicate to {sid}: {e}")
@@ -94,7 +81,7 @@ def append_message():
 
     return jsonify({"status": "ok", "replicated_to": list(results.keys())}), 200
 
-@app.route("/messages", methods=["GET"])
+@app.route("/", methods=["GET"])
 def get_messages():
     return jsonify({"messages": master_log}), 200
 

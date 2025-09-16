@@ -17,45 +17,11 @@ log_lock = threading.Lock()
 
 MASTER_URL = os.environ.get("MASTER_URL", "http://master:5000")  # master service url inside compose
 PORT = int(os.environ.get("SECONDARY_PORT", 5001))
-#SLEEP_SEC = float(os.environ.get("SECONDARY_APPLY_DELAY_SEC", "0"))  # to simulate delay
-
 ID = os.environ.get("SECONDARY_ID") or f"secondary-{str(uuid.uuid4())[:8]}"
-'''
-# Read the centralized delay mapping from env
-# Example: '{"secondary_1":0,"secondary_2":1}'
-delay_mapping_str = os.environ.get("SECONDARY_DELAYS", "{}")
-try:
-    delay_mapping = json.loads(delay_mapping_str)
-except json.JSONDecodeError:
-    delay_mapping = {}
 
-# Determine this container's delay
-SLEEP_SEC = delay_mapping.get(ID, 0)
-app.logger.info(f"Secondary {ID} starting with apply delay: {SLEEP_SEC}s")
-'''
-'''
-# 1. Determine unique ID
-SECONDARY_ID = os.environ.get("SECONDARY_ID")
-#ID = os.environ.get("SECONDARY_ID")
-
-# If not set, use Docker hostname (secondary_1, secondary_2, …)
-if not SECONDARY_ID:
-    SECONDARY_ID = socket.gethostname()
-
-ID = socket.gethostname()
-
-# 2. Parse centralized delays
-delay_mapping_str = os.environ.get("SECONDARY_DELAYS", "{}")
-try:
-    delay_mapping = json.loads(delay_mapping_str)
-except json.JSONDecodeError:
-    delay_mapping = {}
-'''
 SECONDARY_ID = socket.gethostname()
 SLEEP_SEC = float(os.environ.get("SECONDARY_DELAYS", "0")) #delay_mapping.get(SECONDARY_ID, 0)
 app.logger.info(f"Secondary {SECONDARY_ID} starting with delay: {SLEEP_SEC}s")
-
-
 
 
 def get_local_ip():
@@ -97,7 +63,7 @@ def replicate():
     app.logger.info(f"Replicated entry applied: {data}")
     return jsonify({"status": "ack"}), 200
 
-@app.route("/messages", methods=["GET"])
+@app.route("/", methods=["GET"])
 def get_messages():
     with log_lock:
         return jsonify({"messages": list(secondary_log)}), 200

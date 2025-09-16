@@ -1,5 +1,5 @@
 # docker compose up --build
-# docker compose up --scale secondary=2
+
 version: "3.9"
 services:
   master:
@@ -18,14 +18,8 @@ services:
     build:
       context: .
       dockerfile: Dockerfile.secondary
-    #container_name: secondary_1
     environment:
       - MASTER_URL=http://master:5000
-      # Optionally set SECONDARY_APPLY_DELAY_SEC to simulate a slow secondary
-      #- SECONDARY_APPLY_DELAY_SEC=0
-      # SECONDARY_ID can be set; when scaling containers Docker will add suffixes if not set
-      #- SECONDARY_ID=secondary_1
-      #- SECONDARY_DELAYS={"secondary_1":0,"secondary_2":1}
     networks:
       - repl_net
     ports:
@@ -37,13 +31,8 @@ services:
     build:
       context: .
       dockerfile: Dockerfile.secondary
-    #container_name: secondary_1
     environment:
       - MASTER_URL=http://master:5000
-      # Optionally set SECONDARY_APPLY_DELAY_SEC to simulate a slow secondary
-      #- SECONDARY_APPLY_DELAY_SEC=0
-      # SECONDARY_ID can be set; when scaling containers Docker will add suffixes if not set
-      #- SECONDARY_ID=secondary_1
       - SECONDARY_DELAYS=10
     networks:
       - repl_net
