@@ -1,0 +1,209 @@
+var.project_id
+  Project ID to create resources in.
+
+  Enter a value: data-engineering-ucu-2025
+
+google_storage_bucket.dataops-bucket: Refreshing state... [id=dataops-bucket-z566sgfwa]
+google_compute_instance.vm_instance: Refreshing state... [id=projects/data-engineering-ucu-2025/zones/us-central1-c/instances/dataops-dataset-vm]
+google_bigquery_dataset.dataops-dataset: Refreshing state... [id=projects/data-engineering-ucu-2025/datasets/dataops_dataset]
+
+Terraform used the selected providers to generate the following execution plan. Resource actions are indicated with  
+the following symbols:
+  - destroy
+
+Terraform will perform the following actions:
+
+  # google_bigquery_dataset.dataops-dataset will be destroyed
+  - resource "google_bigquery_dataset" "dataops-dataset" {
+      - creation_time                   = 1758463638320 -> null
+      - dataset_id                      = "dataops_dataset" -> null
+      - default_partition_expiration_ms = 0 -> null
+      - default_table_expiration_ms     = 0 -> null
+      - delete_contents_on_destroy      = false -> null
+      - effective_labels                = {
+          - "goog-terraform-provisioned" = "true"
+        } -> null
+      - etag                            = "p+UoU53igwcHWBj44h9ZGw==" -> null
+      - id                              = "projects/data-engineering-ucu-2025/datasets/dataops_dataset" -> null      
+      - is_case_insensitive             = false -> null
+      - labels                          = {} -> null
+      - last_modified_time              = 1758463638320 -> null
+      - location                        = "europe-west6" -> null
+      - max_time_travel_hours           = "168" -> null
+      - project                         = "data-engineering-ucu-2025" -> null
+      - resource_tags                   = {} -> null
+      - self_link                       = "https://bigquery.googleapis.com/bigquery/v2/projects/data-engineering-ucu-2025/datasets/dataops_dataset" -> null
+      - terraform_labels                = {
+          - "goog-terraform-provisioned" = "true"
+        } -> null
+
+      - access {
+          - role          = "OWNER" -> null
+          - user_by_email = "4Kravets@gmail.com" -> null
+        }
+      - access {
+          - role          = "OWNER" -> null
+          - special_group = "projectOwners" -> null
+        }
+      - access {
+          - role          = "READER" -> null
+          - special_group = "projectReaders" -> null
+        }
+      - access {
+          - role          = "WRITER" -> null
+          - special_group = "projectWriters" -> null
+        }
+    }
+
+  # google_compute_instance.vm_instance will be destroyed
+  - resource "google_compute_instance" "vm_instance" {
+      - can_ip_forward       = false -> null
+      - cpu_platform         = "Intel Broadwell" -> null
+      - creation_timestamp   = "2025-09-21T07:07:21.362-07:00" -> null
+      - current_status       = "RUNNING" -> null
+      - deletion_protection  = false -> null
+      - effective_labels     = {
+          - "goog-terraform-provisioned" = "true"
+        } -> null
+      - enable_display       = false -> null
+      - id                   = "projects/data-engineering-ucu-2025/zones/us-central1-c/instances/dataops-dataset-vm" -> null
+      - instance_id          = "200484205946058870" -> null
+      - label_fingerprint    = "vezUS-42LLM=" -> null
+      - labels               = {} -> null
+      - machine_type         = "e2-standard-2" -> null
+      - metadata             = {} -> null
+      - metadata_fingerprint = "ooO_d-9IUQg=" -> null
+      - name                 = "dataops-dataset-vm" -> null
+      - project              = "data-engineering-ucu-2025" -> null
+      - resource_policies    = [] -> null
+      - self_link            = "https://www.googleapis.com/compute/v1/projects/data-engineering-ucu-2025/zones/us-central1-c/instances/dataops-dataset-vm" -> null
+      - tags                 = [
+          - "devops-course",
+          - "ssh",
+        ] -> null
+      - tags_fingerprint     = "bPNY2gaTSIc=" -> null
+      - terraform_labels     = {
+          - "goog-terraform-provisioned" = "true"
+        } -> null
+      - zone                 = "us-central1-c" -> null
+
+      - boot_disk {
+          - auto_delete       = true -> null
+          - device_name       = "persistent-disk-0" -> null
+          - force_attach      = false -> null
+          - guest_os_features = [
+              - "UEFI_COMPATIBLE",
+              - "VIRTIO_SCSI_MULTIQUEUE",
+              - "SEV_CAPABLE",
+              - "SEV_SNP_CAPABLE",
+              - "SEV_LIVE_MIGRATABLE",
+              - "SEV_LIVE_MIGRATABLE_V2",
+              - "GVNIC",
+              - "IDPF",
+              - "TDX_CAPABLE",
+            ] -> null
+          - mode              = "READ_WRITE" -> null
+          - source            = "https://www.googleapis.com/compute/v1/projects/data-engineering-ucu-2025/zones/us-central1-c/disks/dataops-dataset-vm" -> null
+
+          - initialize_params {
+              - architecture                = "X86_64" -> null
+              - enable_confidential_compute = false -> null
+              - image                       = "https://www.googleapis.com/compute/v1/projects/centos-cloud/global/images/centos-stream-9-v20250910" -> null
+              - labels                      = {} -> null
+              - provisioned_iops            = 0 -> null
+              - provisioned_throughput      = 0 -> null
+              - resource_manager_tags       = {} -> null
+              - resource_policies           = [] -> null
+              - size                        = 20 -> null
+              - type                        = "pd-standard" -> null
+            }
+        }
+
+      - network_interface {
+          - internal_ipv6_prefix_length = 0 -> null
+          - name                        = "nic0" -> null
+          - network                     = "https://www.googleapis.com/compute/v1/projects/data-engineering-ucu-2025/global/networks/default" -> null
+          - network_ip                  = "10.128.0.3" -> null
+          - queue_count                 = 0 -> null
+          - stack_type                  = "IPV4_ONLY" -> null
+          - subnetwork                  = "https://www.googleapis.com/compute/v1/projects/data-engineering-ucu-2025/regions/us-central1/subnetworks/default" -> null
+          - subnetwork_project          = "data-engineering-ucu-2025" -> null
+
+          - access_config {
+              - nat_ip       = "34.70.251.50" -> null
+              - network_tier = "PREMIUM" -> null
+            }
+        }
+
+      - scheduling {
+          - automatic_restart   = true -> null
+          - availability_domain = 0 -> null
+          - min_node_cpus       = 0 -> null
+          - on_host_maintenance = "MIGRATE" -> null
+          - preemptible         = false -> null
+          - provisioning_model  = "STANDARD" -> null
+        }
+
+      - shielded_instance_config {
+          - enable_integrity_monitoring = true -> null
+          - enable_secure_boot          = false -> null
+          - enable_vtpm                 = true -> null
+        }
+    }
+
+  # google_storage_bucket.dataops-bucket will be destroyed
+  - resource "google_storage_bucket" "dataops-bucket" {
+      - default_event_based_hold    = false -> null
+      - effective_labels            = {
+          - "goog-terraform-provisioned" = "true"
+        } -> null
+      - enable_object_retention     = false -> null
+      - force_destroy               = true -> null
+      - id                          = "dataops-bucket-z566sgfwa" -> null
+      - labels                      = {} -> null
+      - location                    = "EUROPE-WEST6" -> null
+      - name                        = "dataops-bucket-z566sgfwa" -> null
+      - project                     = "data-engineering-ucu-2025" -> null
+      - project_number              = 25965758711 -> null
+      - public_access_prevention    = "enforced" -> null
+      - requester_pays              = false -> null
+      - self_link                   = "https://www.googleapis.com/storage/v1/b/dataops-bucket-z566sgfwa" -> null     
+      - storage_class               = "STANDARD" -> null
+      - terraform_labels            = {
+          - "goog-terraform-provisioned" = "true"
+        } -> null
+      - time_created                = "2025-09-21T14:07:18.865Z" -> null
+      - uniform_bucket_level_access = false -> null
+      - updated                     = "2025-09-21T14:07:18.865Z" -> null
+      - url                         = "gs://dataops-bucket-z566sgfwa" -> null
+
+      - hierarchical_namespace {
+          - enabled = false -> null
+        }
+
+      - soft_delete_policy {
+          - effective_time             = "2025-09-21T14:07:18.865Z" -> null
+          - retention_duration_seconds = 604800 -> null
+        }
+    }
+
+Plan: 0 to add, 0 to change, 3 to destroy.
+
+Do you really want to destroy all resources?
+  Terraform will destroy all your managed infrastructure, as shown above.
+  There is no undo. Only 'yes' will be accepted to confirm.
+
+  Enter a value: yes
+
+google_bigquery_dataset.dataops-dataset: Destroying... [id=projects/data-engineering-ucu-2025/datasets/dataops_dataset]
+google_compute_instance.vm_instance: Destroying... [id=projects/data-engineering-ucu-2025/zones/us-central1-c/instances/dataops-dataset-vm]
+google_storage_bucket.dataops-bucket: Destroying... [id=dataops-bucket-z566sgfwa]
+google_bigquery_dataset.dataops-dataset: Destruction complete after 1s
+google_storage_bucket.dataops-bucket: Destruction complete after 1s
+google_compute_instance.vm_instance: Still destroying... [id=projects/data-engineering-ucu-2025/zone...entral1-c/instances/dataops-dataset-vm, 10s elapsed]
+google_compute_instance.vm_instance: Still destroying... [id=projects/data-engineering-ucu-2025/zone...entral1-c/instances/dataops-dataset-vm, 20s elapsed]
+google_compute_instance.vm_instance: Still destroying... [id=projects/data-engineering-ucu-2025/zone...entral1-c/instances/dataops-dataset-vm, 30s elapsed]
+google_compute_instance.vm_instance: Destruction complete after 31s
+Releasing state lock. This may take a few moments...
+
+Destroy complete! Resources: 3 destroyed.
