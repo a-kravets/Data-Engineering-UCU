@@ -4,7 +4,7 @@
 
 * `docker build -t name/repo_name:tag .`
 
-## Run image
+## Start container
 
 * `docker run -d image_name`
 
