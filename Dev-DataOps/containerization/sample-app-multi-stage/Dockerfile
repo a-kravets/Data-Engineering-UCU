@@ -19,7 +19,7 @@ WORKDIR /app
 # Copy only necessary files from builder
 COPY --from=builder /app /app
 
-# Copy installed Python packages from builder (if using --user)
+# Copy installed Python packages from builder 
 COPY --from=builder /root/.local /root/.local
 ENV PATH=/root/.local/bin:$PATH
 
@@ -28,4 +28,5 @@ USER webservice:webservice
 EXPOSE 8050
 
 ENTRYPOINT ["python", "GraphAnalysis.py"]
+
 CMD ["obj_dependency_data.csv"]
