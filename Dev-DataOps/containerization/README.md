@@ -13,6 +13,7 @@ Run container with the volume:
 
 For testing purpose we may create a file:
 
+*  `cd mount_point_in_container`
 *  `echo 'hello' > 'hello.txt'`
 
 Run second container with the same volume volume:
