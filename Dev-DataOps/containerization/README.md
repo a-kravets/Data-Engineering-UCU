@@ -6,10 +6,10 @@
 
 ## Run image
 
-* `docker run image_name`
+* `docker run -d image_name`
 
-`-d` detached
-`-it` interactive mode
+* `-d` detached
+* `-it` interactive mode
 
 ## Data sharing via volume
 
