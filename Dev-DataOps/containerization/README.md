@@ -1,7 +1,17 @@
 # containerization
 
+## Image build
 
-# Data sharing via volume
+* `docker build -t name/repo_name:tag .`
+
+## Run image
+
+* `docker run image_name`
+
+`-d` detached
+`-it` interactive mode
+
+## Data sharing via volume
 
 Create a volume:
 
