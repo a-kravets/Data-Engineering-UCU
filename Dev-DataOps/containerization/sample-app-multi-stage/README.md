@@ -1,4 +1,4 @@
-# Sample multi-stage application
+# Sample application (multi-stage build)
 
 This is a sample application to visualize dependency between objects. 
 
@@ -23,5 +23,6 @@ python3 GraphAnalysis.py obj_dependency_data.csv
 ## How to access
 
 Access Web UI on 8050 port. 
+
 
 
