@@ -1,0 +1,16 @@
+services:
+  service_a:
+    build: .
+    environment:
+      - PORT=8000
+      - PEER_URL=http://service_b:8000
+    ports:
+      - "8001:8000"
+
+  service_b:
+    build: .
+    environment:
+      - PORT=8000
+      - PEER_URL=http://service_a:8000
+    ports:
+      - "8002:8000"
