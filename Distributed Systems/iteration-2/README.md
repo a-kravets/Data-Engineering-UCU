@@ -1,6 +1,6 @@
 # ITERATION 2
 
-In the previous iteration, the replication was blocking for all secondaries, i.e. to return a response to the client, we should receive acknowledgements (ACK) from all secondaries.
+In the [previous iteration](https://github.com/a-kravets/Data-Engineering-UCU/tree/main/Distributed%20Systems/iteration_1), the replication was blocking for all secondaries, i.e. to return a response to the client, we should receive acknowledgements (ACK) from all secondaries.
 
 <img loading="lazy" src="iteration_2.png" alt="image_name png" />
 
