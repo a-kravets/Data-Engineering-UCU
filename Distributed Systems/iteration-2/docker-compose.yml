@@ -1,0 +1,54 @@
+# Run with:  docker compose up --build
+version: "3.9"
+
+services:
+  master:
+    build:
+      context: .
+      dockerfile: Dockerfile.master
+    container_name: repl_master
+    environment:
+      # how long master waits for each secondary’s ACK
+      - REPLICATE_TIMEOUT_SEC=50
+    ports:
+      - "5000:5000"
+    networks:
+      - repl_net
+
+  # fast secondary
+  secondary_fast:
+    build:
+      context: .
+      dockerfile: Dockerfile.secondary
+    #container_name: repl_secondary_fast
+    environment:
+      - MASTER_URL=http://master:5000
+      #- SECONDARY_ID=secondary_fast
+      - SECONDARY_DELAY=0          # no delay
+    ports:
+      - "5001:5001"                 # host:container
+    networks:
+      - repl_net
+    depends_on:
+      - master
+
+  # slow secondary
+  secondary_slow:
+    build:
+      context: .
+      dockerfile: Dockerfile.secondary
+    #container_name: repl_secondary_slow
+    environment:
+      - MASTER_URL=http://master:5000
+      #- SECONDARY_ID=secondary_slow
+      - SECONDARY_DELAY=10         # emulate lag
+    ports:
+      - "5002:5001"
+    networks:
+      - repl_net
+    depends_on:
+      - master
+
+networks:
+  repl_net:
+    driver: bridge
