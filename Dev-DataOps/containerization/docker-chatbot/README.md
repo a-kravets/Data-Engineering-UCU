@@ -7,3 +7,4 @@
 * [DMR REST API](https://docs.docker.com/ai/model-runner/api-reference/#request-from-the-host-using-tcp)
 * [Docker Model Runner](https://docs.docker.com/ai/model-runner/)
 * [ai/smollm2](https://hub.docker.com/r/ai/smollm2)
+* [Define AI Models in Docker Compose applications](https://docs.docker.com/ai/compose/models-and-compose/#short-syntax)
