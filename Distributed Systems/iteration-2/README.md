@@ -30,3 +30,9 @@ It also has messages deduplication function and guarantee of the total ordering 
 * Master server will be at http://127.0.0.2:5000/, while Secondary servers will have the same IP, but increment ports (for instance, http://127.0.0.2:5001/)
 * Once the docker is up Secondary servers will register themselves with Master server so it knows where to send messages
 * You may use curl or Postman to test how it works
+* Example JSON you may pass to test:
+  `{
+  "message": "hello1",
+  "w": 1,
+  "id": 1
+}`
