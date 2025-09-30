@@ -1,0 +1,18 @@
+services:
+  web:
+    build: .
+    container_name: web-ui
+    networks:
+      - chatbot_net
+    ports:
+      - "8050:8050"
+
+  
+#models:
+#  llm:
+#    model: ai/smollm2:135M-Q4_K_M
+
+
+networks:
+  chatbot_net:
+    driver: bridge
