@@ -6,3 +6,4 @@
 * [Run AI Models Locally with Ease Using Docker Model Runner](https://thelearningfellow.medium.com/run-ai-models-locally-with-ease-using-docker-model-runner-b7a3a43a32c8)
 * [DMR REST API](https://docs.docker.com/ai/model-runner/api-reference/#request-from-the-host-using-tcp)
 * [Docker Model Runner](https://docs.docker.com/ai/model-runner/)
+* [ai/smollm2](https://hub.docker.com/r/ai/smollm2)
