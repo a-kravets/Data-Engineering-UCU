@@ -9,7 +9,7 @@ It's a simple LLM-powered Python-based chatbot
 ## How to ran it
 
 * `git clone https://github.com/a-kravets/Data-Engineering-UCU/tree/main/Dev-DataOps/containerization/docker-chatbot`
-* cd inside the folder
+* `cd` inside the folder
 * `docker compose up --build`
 * The Web UI will be at `http://localhost:8050/`
 
