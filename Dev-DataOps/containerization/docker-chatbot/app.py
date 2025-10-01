@@ -6,26 +6,27 @@ st.set_page_config(page_title="Python-based LLM Chatbot", layout="centered")
 st.title("Python-based LLM Chatbot")
 
 # Backend LLM endpoint
-# we use host.docker.internal instead of localhost
+# (!) We use host.docker.internal instead of localhost
 LLM_API_URL = "http://host.docker.internal:12434/engines/llama.cpp/v1/chat/completions"
 
 if "history" not in st.session_state:
     st.session_state.history = []
 
-user_input = st.text_input("You:", placeholder="Ask me anything...")
-send_button = st.button("Send")
+# Allows to send user message with clicking on a button only
+#user_input = st.text_input("You:", placeholder="Ask me anything...")
+#send_button = st.button("Send")
+
+# Allows to send user message with just hitting Enter
+with st.form(key="chat_form"):
+    user_input = st.text_input("You:", placeholder="Ask me anything...")
+    send_button = st.form_submit_button("Send")
 
 if send_button and user_input.strip():
     # Add user message
     st.session_state.history.append({"role": "user", "content": user_input})
     
-    # Send request to LLM container
+    # Send request to LLM
     try:
- #       payload = {
- #           "model": "ai/smollm2:135M-Q4_K_M",
- #           "messages": st.session_state.history,
- #           "max_tokens": 200
- #       }
         payload = {
             "model": "ai/smollm2:135M-Q4_K_M",
             "messages": [

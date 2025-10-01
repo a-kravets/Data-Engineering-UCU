@@ -1,3 +1,4 @@
+# docker compose up --build
 services:
   web:
     build: .
@@ -12,10 +13,6 @@ services:
 models:
   llm:
     model: ai/smollm2:135M-Q4_K_M
-#models:
-#  llm:
-#    model: ai/smollm2:135M-Q4_K_M
-
 
 networks:
   chatbot_net:
