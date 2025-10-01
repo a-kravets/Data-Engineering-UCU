@@ -1,4 +1,20 @@
-# Useful docs & articles
+# Python-based LLM Chatbot
+
+It's a simple LLM-powered Python-based chatbot
+
+* [Streamlit.io](https://streamlit.io/) is used for Web UI
+* Web UI is exposed on port 8050
+* The application communicates with LLM-model ([ai/smollm2](https://hub.docker.com/r/ai/smollm2))
+* LLM run locally via Docker Model Runner
+
+## How to ran it
+
+* `git clone https://github.com/a-kravets/Data-Engineering-UCU/tree/main/Dev-DataOps/containerization/docker-chatbot`
+* cd inside the folder
+* `docker compose up --build`
+* The Web UI will be at `http://localhost:8050/`
+
+## Useful docs & articles
 
 * [How to Build, Run, and Package AI Models Locally with Docker Model Runner](https://www.docker.com/blog/how-to-build-run-and-package-ai-models-locally-with-docker-model-runner/)
 * [Define AI Models in Docker Compose applications](https://docs.docker.com/ai/compose/models-and-compose/)
