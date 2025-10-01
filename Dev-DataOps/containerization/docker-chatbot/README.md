@@ -5,7 +5,6 @@ It's a simple LLM-powered Python-based chatbot
 * [Streamlit.io](https://streamlit.io/) is used for Web UI
 * Web UI is exposed on port 8050
 * The application communicates with LLM-model ([ai/smollm2](https://hub.docker.com/r/ai/smollm2))
-* LLM run locally via Docker Model Runner
 
 ## How to ran it
 
