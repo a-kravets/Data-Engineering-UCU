@@ -61,6 +61,15 @@ To delete the cluster, run the following command:
 
 ## Orchestrating the Cloud with Kubernetes (Pods and Services)
 
+**Google Kubernetes Engine Zone & Cluster**
+
+* `gcloud config set compute/zone us-east1-c`
+* `gcloud container clusters create io --zone us-east1-c`
+
+You are automatically authenticated to your cluster upon creation. If you lose connection to your Cloud Shell for any reason, run the `gcloud container clusters get-credentials io` command to re-authenticate.
+
+**Create Pods**
+
 A Pod is basically the K8s replacement for "a computer": two containers in the same Pod can talk to each other via localhost, while two containers in different Pods cannot, even if they get run on the same computer.
 
 Pods represent and hold a collection of one or more containers. Generally, if you have multiple containers with a hard dependency on each other, you package the containers inside a single Pod.
@@ -71,12 +80,164 @@ Pods also share a network namespace. This means that there is one IP Address per
 
 Kubernetes Deployment automatically creates Pods for us. By default, 1 Pod is created unless you specify `--replicas=N`
 
+Pods can be created using Pod configuration files. `cat pods/fortune-app.yaml`
 
+```
+apiVersion: v1  
+kind: Pod  
+metadata:  
+  name: fortune-app  
+  labels:  
+    app: fortune-app  
+spec:  
+  containers:  
+    - name: fortune-app  
+      image: "us-central1-docker.pkg.dev/qwiklabs-resources/spl-lab-apps/fortune-app:1.0.0"  
+      ports:  
+        - name: http  
+          containerPort: 8080  
+      resources:  
+        limits:  
+          cpu: 0.2  
+          memory: "20Mi"
+```
+**Create the fortune-app Pod using kubectl:**
 
-text
+* `kubectl create -f pods/fortune-app.yaml`
 
+**Examine your Pods. Use the kubectl get pods command to list all Pods running in the default namespace:**
 
+* `kubectl get pods`
 
+**Once the Pod is running, use the kubectl describe command to get more information about the fortune-app Pod:**
 
+* `kubectl describe pods fortune-app`
 
+**Create a Service**
+
+Pods aren't meant to be persistent. They can be stopped or started for many reasons, like failed liveness or readiness checks, which leads to a problem:
+
+What happens if you want to communicate with a set of Pods? When they get restarted they might have a different IP address.
+
+That's where [Services](https://kubernetes.io/docs/concepts/services-networking/service/) come in. Services provide stable endpoints for Pods.
+
+Services use labels to determine what Pods they operate on. If Pods have the correct labels, they are automatically picked up and exposed by our services.
+
+The level of access a service provides to a set of Pods depends on the Service's type. Currently there are three types:
+
+* ClusterIP (internal) is the default type. This Service is only visible inside the cluster.
+* NodePort gives each node in the cluster an externally accessible IP.
+* LoadBalancer adds a load balancer from the cloud provider which forwards traffic from the Service to Nodes within it.
+
+Secure fortune-app service configuration file:
+
+* `cat pods/secure-fortune.yaml`
+
+Create the secure-fortune Pods and their configuration data:
+
+```
+kubectl create secret generic tls-certs --from-file tls/  
+kubectl create configmap nginx-proxy-conf --from-file nginx/proxy.conf  
+kubectl create -f pods/secure-fortune.yaml
+```
+
+`fortune-app` service configuration file:
+
+```
+kind: Service  
+apiVersion: v1  
+metadata:  
+  name: "fortune-app"  
+spec:  
+  selector:  
+    app: "fortune-app"  
+    secure: "enabled"  
+  ports:  
+    - protocol: "TCP"  
+      port: 443  
+      targetPort: 443  
+      nodePort: 31000  
+  type: NodePort
+```
+
+Use the kubectl create command to create the fortune-app service from the configuration file:
+
+* `kubectl create -f services/fortune-app.yaml`
+
+Use the gcloud compute firewall-rules command to allow traffic to the fortune-app service on the exposed nodeport:
+
+* `gcloud compute firewall-rules create allow-fortune-nodeport --allow tcp:31000`
+
+**Add labels to Pods**
+
+Use the kubectl label command to add the missing secure=enabled label to the secure-fortune Pod
+
+```
+kubectl label pods secure-fortune 'secure=enabled'
+kubectl get pods secure-fortune --show-labels
+```
+
+**Create Deployments***
+
+The goal of this lab is to get you ready for scaling and managing containers in production. That's where Deployments come in. Deployments are a declarative way to ensure that the number of Pods running is equal to the desired number of Pods, specified by the user.
+
+The main benefit of [Deployments](https://kubernetes.io/docs/concepts/workloads/controllers/deployment/#what-is-a-deployment) is in abstracting away the low level details of managing Pods. Behind the scenes Deployments use [Replica Sets](https://kubernetes.io/docs/concepts/workloads/controllers/replicaset/) to manage starting and stopping the Pods. If Pods need to be updated or scaled, the Deployment will handle that. Deployment also handles restarting Pods if they happen to go down for some reason.
+
+You're going to break the fortune-app app into three separate pieces:
+
+* `auth` - Generates JWT tokens for authenticated users.
+* `fortune` - Serves fortunes to authenticated users.
+* `frontend` - Routes traffic to the auth and fortune services.
+
+You are ready to create Deployments, one for each service. Afterwards, you'll define internal services for the auth and fortune Deployments and an external service for the frontend Deployment. Once finished, you'll be able to interact with the microservices just like with the monolith, only now each piece is able to be scaled and deployed, independently!
+
+Get started by examining the auth Deployment configuration file:
+
+`cat deployments/auth.yaml`
+
+```
+apiVersion: apps/v1  
+kind: Deployment  
+metadata:  
+  name: auth  
+spec:  
+  selector:  
+    matchLabels:  
+      app: auth  
+  replicas: 1  
+  template:  
+    metadata:  
+      labels:  
+        app: auth  
+    spec:  
+      containers:  
+        - name: auth  
+          image: "us-central1-docker.pkg.dev/qwiklabs-resources/spl-lab-apps/auth-service:1.0.0"  
+          ports:  
+            - name: http  
+              containerPort: 8080
+```
+
+Create Deployment object:
+
+* `kubectl create -f deployments/auth.yaml`
+
+Create a service for your auth Deployment
+
+* `kubectl create -f services/auth.yaml`
+
+Create and expose the fortune Deployment:
+
+```
+kubectl create -f deployments/fortune-service.yaml
+kubectl create -f services/fortune-service.yaml
+```
+
+And one more time to create and expose the frontend Deployment
+
+```
+kubectl create configmap nginx-frontend-conf --from-file=nginx/frontend.conf  
+kubectl create -f deployments/frontend.yaml  
+kubectl create -f services/frontend.yaml
+```
 
