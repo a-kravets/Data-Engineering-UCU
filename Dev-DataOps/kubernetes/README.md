@@ -63,11 +63,18 @@ To delete the cluster, run the following command:
 
 A Pod is basically the K8s replacement for "a computer": two containers in the same Pod can talk to each other via localhost, while two containers in different Pods cannot, even if they get run on the same computer.
 
+Pods represent and hold a collection of one or more containers. Generally, if you have multiple containers with a hard dependency on each other, you package the containers inside a single Pod.
+
+Pods also have [Volumes](https://kubernetes.io/docs/concepts/storage/volumes/). Volumes are data disks that live as long as the Pods live, and can be used by the containers in that Pod. Pods provide a shared namespace for their contents which means that the two containers inside of our example Pod can communicate with each other, and they also share the attached volumes.
+
+Pods also share a network namespace. This means that there is one IP Address per Pod.
+
 Kubernetes Deployment automatically creates Pods for us. By default, 1 Pod is created unless you specify `--replicas=N`
 
 
 
 text
+
 
 
 
