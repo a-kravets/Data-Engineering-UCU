@@ -38,6 +38,8 @@ To create a new Deployment `hello-server` from the `hello-app` container image, 
 
 This Kubernetes command creates a deployment object that represents `hello-server`. In this case, `--image` specifies a container image to deploy. The command pulls the example image from a Container Registry bucket. `gcr.io/google-samples/hello-app:1.0` indicates the specific image version to pull. If a version is not specified, the latest version is used.
 
+**(!)** Note that Kubernetes automatically creates Pods for us. By default, 1 Pod is created unless you specify `--replicas=N`
+
 To create a Kubernetes Service, which is a Kubernetes resource that lets you expose your application to external traffic, run the following kubectl expose command:
 
 * `kubectl expose deployment hello-server --type=LoadBalancer --port 8080`
@@ -58,6 +60,7 @@ To delete the cluster, run the following command:
 * `gcloud container clusters delete lab-cluster`
 
 text
+
 
 
 
