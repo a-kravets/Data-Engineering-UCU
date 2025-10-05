@@ -59,12 +59,15 @@ To delete the cluster, run the following command:
 
 * `gcloud container clusters delete lab-cluster`
 
+## Orchestrating the Cloud with Kubernetes (Pods and Services)
+
+A Pod is basically the K8s replacement for "a computer": two containers in the same Pod can talk to each other via localhost, while two containers in different Pods cannot, even if they get run on the same computer.
+
+Kubernetes automatically creates Pods for us. By default, 1 Pod is created unless you specify `--replicas=N`
+
+
+
 text
-
-
-
-
-
 
 
 
