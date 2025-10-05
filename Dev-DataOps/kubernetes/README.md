@@ -7,7 +7,7 @@
 
 # Google Kubernetes Engine 
 
-## Create a GKE cluster and deploy application
+## Intro: Create a GKE cluster and deploy application
 
 **Set a default compute zone**
 
@@ -38,7 +38,7 @@ To create a new Deployment `hello-server` from the `hello-app` container image, 
 
 This Kubernetes command creates a deployment object that represents `hello-server`. In this case, `--image` specifies a container image to deploy. The command pulls the example image from a Container Registry bucket. `gcr.io/google-samples/hello-app:1.0` indicates the specific image version to pull. If a version is not specified, the latest version is used.
 
-**(!)** Note that Kubernetes automatically creates Pods for us. By default, 1 Pod is created unless you specify `--replicas=N`
+**(!)** Note that Kubernetes Deployment automatically creates Pods for us. By default, 1 Pod is created unless you specify `--replicas=N`
 
 To create a Kubernetes Service, which is a Kubernetes resource that lets you expose your application to external traffic, run the following kubectl expose command:
 
@@ -63,11 +63,12 @@ To delete the cluster, run the following command:
 
 A Pod is basically the K8s replacement for "a computer": two containers in the same Pod can talk to each other via localhost, while two containers in different Pods cannot, even if they get run on the same computer.
 
-Kubernetes automatically creates Pods for us. By default, 1 Pod is created unless you specify `--replicas=N`
+Kubernetes Deployment automatically creates Pods for us. By default, 1 Pod is created unless you specify `--replicas=N`
 
 
 
 text
+
 
 
 
