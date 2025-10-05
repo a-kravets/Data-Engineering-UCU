@@ -33,9 +33,30 @@ To create a new Deployment `hello-server` from the `hello-app` container image, 
 
 * `kubectl create deployment hello-server --image=gcr.io/google-samples/hello-app:1.0`
 
-This Kubernetes command creates a deployment object that represents hello-server. In this case, --image specifies a container image to deploy. The command pulls the example image from a Container Registry bucket. gcr.io/google-samples/hello-app:1.0 indicates the specific image version to pull. If a version is not specified, the latest version is used.
+This Kubernetes command creates a deployment object that represents `hello-server`. In this case, `--image` specifies a container image to deploy. The command pulls the example image from a Container Registry bucket. `gcr.io/google-samples/hello-app:1.0` indicates the specific image version to pull. If a version is not specified, the latest version is used.
+
+To create a Kubernetes Service, which is a Kubernetes resource that lets you expose your application to external traffic, run the following kubectl expose command:
+
+* `kubectl expose deployment hello-server --type=LoadBalancer --port 8080`
+
+  * `--port` specifies the port that the container exposes
+  * `type="LoadBalancer"` creates a Compute Engine load balancer for your container
+
+To inspect the hello-server Service, run kubectl get: `kubectl get service`
+
+To view the application from your web browser, open a new tab and enter the following address, replacing `[EXTERNAL IP]` with the `EXTERNAL-IP` for `hello-server`.
+
+* `http://[EXTERNAL-IP]:8080`
+
+**Delete the cluster**
+
+To delete the cluster, run the following command:
+
+* `gcloud container clusters delete lab-cluster`
 
 text
+
+
 
 
 
