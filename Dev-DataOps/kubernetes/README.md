@@ -44,7 +44,7 @@ To create a Kubernetes Service, which is a Kubernetes resource that lets you exp
 
 To inspect the hello-server Service, run kubectl get: `kubectl get service`
 
-To view the application from your web browser, open a new tab and enter the following address, replacing `[EXTERNAL IP]` with the `EXTERNAL-IP` for `hello-server`.
+To view the application from your web browser, open a new tab and enter the following address, replacing `[EXTERNAL IP]` with the `EXTERNAL-IP` for `hello-server` (we can find it by runnin `kubectl get service`).
 
 * `http://[EXTERNAL-IP]:8080`
 
@@ -55,6 +55,7 @@ To delete the cluster, run the following command:
 * `gcloud container clusters delete lab-cluster`
 
 text
+
 
 
 
