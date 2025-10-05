@@ -17,5 +17,16 @@ Your [compute zone](https://cloud.google.com/compute/docs/regions-zones/#availab
 
 A cluster consists of at least one cluster master machine and multiple worker machines called nodes. Nodes are Compute Engine virtual machine (VM) instances that run the Kubernetes processes necessary to make them part of the cluster.
 
+* `gcloud container clusters create --machine-type=e2-medium --zone=ZONE lab-cluster`
+
+**Get authentication credentials for the cluster**
+
+After creating your cluster, you need authentication credentials to interact with it.
+
+* `gcloud container clusters get-credentials lab-cluster`
+
+**Deploy an application to the cluster**
+
 text
+
 
