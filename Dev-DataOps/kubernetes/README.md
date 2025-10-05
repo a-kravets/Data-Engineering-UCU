@@ -7,6 +7,16 @@
 
 # Google Kubernetes Engine 
 
+## Push the Docker image to the Artifact Registry
+
+o push images to your private registry hosted by Artifact Registry, you need to tag the images with a registry name. The format is `<regional-repository>-docker.pkg.dev/my-project/my-repo/my-image`.
+
+For instance:
+
+* `docker push europe-west4-docker.pkg.dev/qwiklabs-gcp-02-8869fab4a91d/valkyrie-docker-repo/valkyrie-app:v0.0.1`
+
+See [containerization](https://github.com/a-kravets/Data-Engineering-UCU/tree/main/Dev-DataOps/containerization) for more details
+
 ## Intro: Create a GKE cluster and deploy application
 
 **Set a default compute zone**
@@ -240,4 +250,5 @@ kubectl create configmap nginx-frontend-conf --from-file=nginx/frontend.conf
 kubectl create -f deployments/frontend.yaml  
 kubectl create -f services/frontend.yaml
 ```
+
 
