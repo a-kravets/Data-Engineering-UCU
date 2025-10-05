@@ -15,6 +15,7 @@ Your [compute zone](https://cloud.google.com/compute/docs/regions-zones/#availab
 
 **Create a GKE cluster**
 
-
+A cluster consists of at least one cluster master machine and multiple worker machines called nodes. Nodes are Compute Engine virtual machine (VM) instances that run the Kubernetes processes necessary to make them part of the cluster.
 
 text
+
