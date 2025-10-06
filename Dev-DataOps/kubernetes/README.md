@@ -250,5 +250,8 @@ kubectl create configmap nginx-frontend-conf --from-file=nginx/frontend.conf
 kubectl create -f deployments/frontend.yaml  
 kubectl create -f services/frontend.yaml
 ```
+## Building containers with DockerFile and [Cloud Build](https://cloud.google.com/build/docs/overview)
+
+You can write build configuration files to provide instructions to Cloud Build as to which tasks to perform when building a container. These build files can fetch dependencies, run unit tests, analyses and more. In this task, you'll create a DockerFile and use it as a build configuration script with Cloud Build. You will also create a simple shell script (quickstart.sh) which will represent an application inside the container.
 
 
