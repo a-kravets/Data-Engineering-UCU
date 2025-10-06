@@ -252,6 +252,23 @@ kubectl create -f services/frontend.yaml
 ```
 ## Building containers with DockerFile and [Cloud Build](https://cloud.google.com/build/docs/overview)
 
+Cloud Build is a build automation service. It:
+
+* Compiles source code.
+* Builds container images.
+* Runs tests or scripts.
+* Pushes the built image to a registry.
+
+**When to use Cloud Build:**
+
+* To automate building containers whenever code changes (CI/CD pipelines).
+* To ensure reproducible, isolated builds that don’t depend on your laptop.
+* To integrate testing or security scanning before deploying.
+* You run it before deploying to Kubernetes.
+
+Cloud Build prepares the artifacts (like the container image) that Deployments will run.
+
 You can write build configuration files to provide instructions to Cloud Build as to which tasks to perform when building a container. These build files can fetch dependencies, run unit tests, analyses and more. In this task, you'll create a DockerFile and use it as a build configuration script with Cloud Build. You will also create a simple shell script (quickstart.sh) which will represent an application inside the container.
+
 
 
