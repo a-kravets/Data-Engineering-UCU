@@ -1,3 +1,10 @@
+## Contents:
+
+* [Push the Docker image to the Artifact Registry](https://github.com/a-kravets/Data-Engineering-UCU/tree/main/Dev-DataOps/kubernetes#push-the-docker-image-to-the-artifact-registry)
+* [Intro: Create a GKE cluster and deploy application](https://github.com/a-kravets/Data-Engineering-UCU/tree/main/Dev-DataOps/kubernetes#intro-create-a-gke-cluster-and-deploy-application)
+* [Orchestrating the Cloud with Kubernetes (Pods and Services)](https://github.com/a-kravets/Data-Engineering-UCU/tree/main/Dev-DataOps/kubernetes#orchestrating-the-cloud-with-kubernetes-pods-and-services)
+* [Building containers with DockerFile and Cloud Build](https://github.com/a-kravets/Data-Engineering-UCU/tree/main/Dev-DataOps/kubernetes#building-containers-with-dockerfile-and-cloud-build)
+
 ## Useful resources
 
 * [Kubernetes Overview](https://kubernetes.io/docs/concepts/overview/)
@@ -269,6 +276,7 @@ Cloud Build is a build automation service. It:
 Cloud Build prepares the artifacts (like the container image) that Deployments will run.
 
 You can write build configuration files to provide instructions to Cloud Build as to which tasks to perform when building a container. These build files can fetch dependencies, run unit tests, analyses and more. In this task, you'll create a DockerFile and use it as a build configuration script with Cloud Build. You will also create a simple shell script (quickstart.sh) which will represent an application inside the container.
+
 
 
 
