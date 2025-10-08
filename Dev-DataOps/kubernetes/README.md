@@ -45,6 +45,14 @@ After creating your cluster, you need authentication credentials to interact wit
 
 * `gcloud container clusters get-credentials lab-cluster`
 
+**kubectl**
+
+`kubectl` stores its configuration in a file in the home directory in a hidden folder `$HOME/.kube/config`
+
+It contains the list of clusters and the credentials that will be attached to each of those clusters.
+
+To view the configuration, either open the config file or use the `kubectl` command `config view`.
+
 **Deploy an application to the cluster**
 
 Kubernetes provides the Deployment object for deploying stateless applications like web servers. Service objects define rules and load balancing for accessing your application from the internet.
@@ -274,6 +282,7 @@ Cloud Build is a build automation service. It:
 * You run it before deploying to Kubernetes.
 
 Cloud Build prepares the artifacts (like the container image) that Deployments will run.
+
 
 
 
