@@ -4,6 +4,7 @@
 * [Intro: Create a GKE cluster and deploy application](https://github.com/a-kravets/Data-Engineering-UCU/tree/main/Dev-DataOps/kubernetes#intro-create-a-gke-cluster-and-deploy-application)
 * [Orchestrating the Cloud with Kubernetes (Pods and Services)](https://github.com/a-kravets/Data-Engineering-UCU/tree/main/Dev-DataOps/kubernetes#orchestrating-the-cloud-with-kubernetes-pods-and-services)
 * [Building containers with DockerFile and Cloud Build](https://github.com/a-kravets/Data-Engineering-UCU/tree/main/Dev-DataOps/kubernetes#building-containers-with-dockerfile-and-cloud-build)
+* [Clusters debugging (Introspection)](https://github.com/a-kravets/Data-Engineering-UCU/edit/main/Dev-DataOps/kubernetes/README.md#clusters-debugging-introspection)
 
 ## Useful resources
 
@@ -287,11 +288,23 @@ Cloud Build is a build automation service. It:
 
 Cloud Build prepares the artifacts (like the container image) that Deployments will run.
 
+## Clusters debugging (Introspection)
 
+It’s the act of gathering information about the containers, pods, services, and other engines that run within the cluster.
 
+* `get`
+* `describe`
+* `exec`
+* `logs`
 
+**kubectl get pods:**
 
+* `Pending` status says that K8s has accepted the Pod, but it’s still being scheduled.
+* `Unknown` status is where the state of the Pod simply cannot be retrieved, probably because of a communication error between the control plane and a kubelet.
+* `CrashLoopBackOff` means that one of the containers in the Pod exited unexpectedly even after it was restarted at least once. Usually, this means that the Pod isn’t configured correctly.
 
+**kubectl describe pod [name]**
 
+**kubectl exec [pod name] -- [command]** runs a single command inside a container
 
-
+**kubectl logs [pod name]** provides a way to see what is happening inside a Pod.
