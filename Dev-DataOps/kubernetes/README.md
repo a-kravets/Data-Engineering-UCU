@@ -53,6 +53,10 @@ It contains the list of clusters and the credentials that will be attached to ea
 
 To view the configuration, either open the config file or use the `kubectl` command `config view`.
 
+`kubectl` command syntax: `kubectl` [command] [type] [name] [flags]
+
+For instance, `kubectl create deployment hello-server --image=gcr.io/google-samples/hello-app:1.0`
+
 **Deploy an application to the cluster**
 
 Kubernetes provides the Deployment object for deploying stateless applications like web servers. Service objects define rules and load balancing for accessing your application from the internet.
@@ -282,6 +286,7 @@ Cloud Build is a build automation service. It:
 * You run it before deploying to Kubernetes.
 
 Cloud Build prepares the artifacts (like the container image) that Deployments will run.
+
 
 
 
