@@ -4,7 +4,7 @@
 * [Intro: Create a GKE cluster and deploy application](https://github.com/a-kravets/Data-Engineering-UCU/tree/main/Dev-DataOps/kubernetes#intro-create-a-gke-cluster-and-deploy-application)
 * [Orchestrating the Cloud with Kubernetes (Pods and Services)](https://github.com/a-kravets/Data-Engineering-UCU/tree/main/Dev-DataOps/kubernetes#orchestrating-the-cloud-with-kubernetes-pods-and-services)
 * [Building containers with DockerFile and Cloud Build](https://github.com/a-kravets/Data-Engineering-UCU/tree/main/Dev-DataOps/kubernetes#building-containers-with-dockerfile-and-cloud-build)
-* [Clusters debugging (Introspection)](https://github.com/a-kravets/Data-Engineering-UCU/edit/main/Dev-DataOps/kubernetes/README.md#clusters-debugging-introspection)
+* [Clusters debugging (Introspection)](https://github.com/a-kravets/Data-Engineering-UCU/blob/main/Dev-DataOps/kubernetes/README.md#clusters-debugging-introspection)
 
 ## Useful resources
 
@@ -308,3 +308,4 @@ It’s the act of gathering information about the containers, pods, services, an
 **kubectl exec [pod name] -- [command]** runs a single command inside a container
 
 **kubectl logs [pod name]** provides a way to see what is happening inside a Pod.
+
