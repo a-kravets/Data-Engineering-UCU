@@ -305,7 +305,8 @@ It’s the act of gathering information about the containers, pods, services, an
 
 **kubectl describe pod [name]**
 
-**kubectl exec [pod name] -- [command]** runs a single command inside a container
+**kubectl exec [pod name] -- [command]** runs a single command inside a container. `kubectl exec -it [pod name] -- [command]` launches an interactive shell inside the container 
 
 **kubectl logs [pod name]** provides a way to see what is happening inside a Pod.
+
 
