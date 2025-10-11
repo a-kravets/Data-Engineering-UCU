@@ -26,15 +26,15 @@ MAX_WORKERS = int(os.environ.get("MASTER_MAX_WORKERS", "16"))
 
 # Monotonic sequence counter for total ordering
 # Currently is not used
-#_seq_lock = threading.Lock()
-#_seq = 0
+_seq_lock = threading.Lock()
+_seq = 0
 
 
-#def next_seq():
-#    global _seq
-#    with _seq_lock:
-#        _seq += 1
-#        return _seq
+def next_seq():
+    global _seq
+    with _seq_lock:
+        _seq += 1
+        return _seq
 
 
 @app.route("/register", methods=["POST"])
@@ -81,7 +81,7 @@ def append_message():
     data = request.get_json() or {}
     message = data.get("message")
     try:
-        w = int(data.get("w", 1))
+        w = int(data.get("w", len(dict(secondaries)) + 1))  # default w = # secondary + 1
     except Exception:
         return jsonify({"error": "w must be integer >= 1"}), 400
 
@@ -95,18 +95,19 @@ def append_message():
     if message_id is None:
         return jsonify({"error": "id required"}), 400
     seq_id = next_seq()
-    entry = {"id": message_id, "message": message, "timestamp": time.time()}
+    entry = {"id": seq_id, "message": message, "timestamp": time.time()}
 
     with master_lock:
-        if any(e["message"] == message for e in master_log):
-            return jsonify({"status": "duplicate_skipped"}), 200
+        # if we want to avoid duplicates in messages
+        # if any(e["message"] == message for e in master_log):
+        #     return jsonify({"status": "duplicate_skipped"}), 200
         master_log.append(entry)
 
-    app.logger.info(f"Appended to master log id={message_id}: {message} (w={w})")
+    app.logger.info(f"Appended to master log id={seq_id}: {message} (w={w})")
 
     # If w == 1, we don't need any secondary ACKs (master-only write concern).
-    if w == 1:
-        return jsonify({"status": "ok", "w": w, "entry": entry}), 200
+    # if w == 1:
+    #    return jsonify({"status": "ok", "w": w, "entry": entry}), 200
 
     # Determine how many secondary ACKs we need
     with secondaries_lock:
@@ -208,4 +209,4 @@ def get_secondary_messages():
 if __name__ == "__main__":
     host = "0.0.0.0"
     port = int(os.environ.get("MASTER_PORT", 5000))
-    app.run(host=host, port=port)
+    app.run(host=host, port=port, threaded=True)
