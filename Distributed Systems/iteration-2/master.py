@@ -91,9 +91,9 @@ def append_message():
         return jsonify({"error": "w must be >= 1"}), 400
 
     # Assign global sequence id and timestamp, append to master log
-    message_id = data.get("id")
-    if message_id is None:
-        return jsonify({"error": "id required"}), 400
+    # message_id = data.get("id")
+    # if message_id is None:
+    #    return jsonify({"error": "id required"}), 400
     seq_id = next_seq()
     entry = {"id": seq_id, "message": message, "timestamp": time.time()}
 
