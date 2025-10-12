@@ -38,7 +38,7 @@ It also has messages deduplication function and guarantee of the total ordering 
 }`
 * Example curl:
 
-  * `curl -X POST -H "Content-Type: application/json" http://127.0.0.2:5000/ -d '{ "message": "msg1", "w": 1, "id": 1 }'`
+  * `curl -X POST -H "Content-Type: application/json" http://127.0.0.2:5000/ -d '{ "message": "msg1", "w": 1 }'`
   
   * `curl http://127.0.0.2:5000/`
   
