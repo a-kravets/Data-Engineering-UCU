@@ -109,6 +109,19 @@ def append_message():
     # if w == 1:
     #    return jsonify({"status": "ok", "w": w, "entry": entry}), 200
 
+    if w == 1:
+        with secondaries_lock:
+            targets = dict(secondaries)
+        if targets:
+            def replicate_bg(entry, targets):
+                for sid, url in targets.items():
+                    try:
+                        replicate_to_secondary(sid, url, entry)
+                    except Exception as e:
+                        app.logger.warning(f"Background replication to {sid} failed: {e}")
+            threading.Thread(target=replicate_bg, args=(entry, targets), daemon=True).start()
+        return jsonify({"status": "ok", "w": w, "entry": entry}), 200
+
     # Determine how many secondary ACKs we need
     with secondaries_lock:
         targets = dict(secondaries)  # copy
@@ -139,8 +152,10 @@ def append_message():
 
         try:
             # as futures complete, count ACKs and break when enough have arrived
+            
             for fut in as_completed(future_to_sid, timeout=(REPLICATE_TIMEOUT_SEC * len(targets) + 1)):
                 sid = future_to_sid[fut]
+                
                 try:
                     sid_ret, ok, detail = fut.result()
                 except Exception as e:
@@ -156,7 +171,8 @@ def append_message():
 
                 if ack_count >= required_acks:
                     app.logger.info(f"Required acks {required_acks} reached, returning to client")
-                    break
+                    return jsonify({"status": "ok", "w": w, "entry": entry, "acks_received": ack_count, "results": results}), 200
+                    #break
         except Exception as e:
             app.logger.warning(f"Exception while waiting for replication futures: {e}")
 
