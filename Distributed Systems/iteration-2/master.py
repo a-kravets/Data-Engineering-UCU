@@ -133,9 +133,9 @@ def append_message():
 
     # Parallel replication to secondaries.
     # We'll submit tasks in parallel and return as soon as required_acks are received (early exit).
-    results = {}
-    ack_count = 0
-    errors = {}
+    #results = {}
+    #ack_count = 0
+    #errors = {}
 
     if len(targets) == 0:
         # No secondaries available
@@ -144,42 +144,81 @@ def append_message():
         else:
             return jsonify({"status": "ok", "w": w, "entry": entry}), 200
 
-    with ThreadPoolExecutor(max_workers=min(MAX_WORKERS, max(1, len(targets)))) as ex:
-        future_to_sid = {}
-        for sid, url in targets.items():
-            future = ex.submit(replicate_to_secondary, sid, url, entry)
-            future_to_sid[future] = sid
+    # -------------------------------------------------------------------------
+    # Parallel replication with early return once required ACKs are received
+    # -------------------------------------------------------------------------
+    import concurrent.futures
 
-        try:
-            # as futures complete, count ACKs and break when enough have arrived
-            
-            for fut in as_completed(future_to_sid, timeout=(REPLICATE_TIMEOUT_SEC * len(targets) + 1)):
-                sid = future_to_sid[fut]
-                
-                try:
-                    sid_ret, ok, detail = fut.result()
-                except Exception as e:
-                    ok = False
-                    detail = {"exception": str(e)}
-                results[sid] = {"ack": ok, "detail": detail}
-                if ok:
-                    ack_count += 1
-                    app.logger.info(f"Received ACK from {sid} (total acks={ack_count}/{required_acks})")
-                else:
-                    errors[sid] = detail
-                    app.logger.warning(f"No ACK from {sid}: {detail}")
+    ack_count = 0
+    results = {}
+    errors = {}
+    done_sids = set()
 
-                if ack_count >= required_acks:
-                    app.logger.info(f"Required acks {required_acks} reached, returning to client")
-                    return jsonify({"status": "ok", "w": w, "entry": entry, "acks_received": ack_count, "results": results}), 200
-                    #break
-        except Exception as e:
-            app.logger.warning(f"Exception while waiting for replication futures: {e}")
+    def replicate_and_track(sid, url):
+        sid_ret, ok, detail = replicate_to_secondary(sid, url, entry)
+        return sid, ok, detail
 
-    # Check if we achieved required_acks
-    if ack_count < required_acks:
-        # Not enough acks
-        app.logger.error(f"Not enough ACKs: got {ack_count}, required {required_acks}")
+    # Start replication threads
+    executor = concurrent.futures.ThreadPoolExecutor(
+        max_workers=min(MAX_WORKERS, max(1, len(targets)))
+    )
+    future_to_sid = {
+        executor.submit(replicate_and_track, sid, url): sid for sid, url in targets.items()
+    }
+
+    try:
+        for fut in concurrent.futures.as_completed(future_to_sid):
+            sid = future_to_sid[fut]
+            try:
+                sid_ret, ok, detail = fut.result()
+            except Exception as e:
+                ok = False
+                detail = {"exception": str(e)}
+
+            results[sid] = {"ack": ok, "detail": detail}
+
+            if ok:
+                ack_count += 1
+                done_sids.add(sid)
+                app.logger.info(f"ACK from {sid} ({ack_count}/{required_acks})")
+            else:
+                errors[sid] = detail
+                app.logger.warning(f"Replication to {sid} failed: {detail}")
+
+            # ✅ Early return once required ACKs reached
+            if ack_count >= required_acks:
+                app.logger.info(
+                    f"Required ACKs ({required_acks}) reached — responding to client"
+                )
+
+                # Launch background thread to let remaining replicas finish
+                pending = [
+                    f for f in future_to_sid if f not in done_sids
+                ]
+
+                def background_wait(pending_futs):
+                    for f in pending_futs:
+                        try:
+                            f.result(timeout=REPLICATE_TIMEOUT_SEC)
+                        except Exception as e:
+                            app.logger.warning(f"Background replication failed: {e}")
+
+                threading.Thread(
+                    target=background_wait, args=(pending,), daemon=True
+                ).start()
+
+                return jsonify({
+                    "status": "ok",
+                    "w": w,
+                    "entry": entry,
+                    "acks_received": ack_count,
+                    "results": results
+                }), 200
+
+        # ---------------------------------------------------------------------
+        # Not enough ACKs within timeout
+        # ---------------------------------------------------------------------
+        app.logger.error(f"Not enough ACKs ({ack_count}/{required_acks}) before timeout")
         return jsonify({
             "status": "partial_failure",
             "required_acks": required_acks,
@@ -187,6 +226,12 @@ def append_message():
             "results": results,
             "errors": errors
         }), 500
+
+    finally:
+        executor.shutdown(wait=False)
+
+
+
 
     # Success
     return jsonify({"status": "ok", "w": w, "entry": entry, "acks_received": ack_count, "results": results}), 200
