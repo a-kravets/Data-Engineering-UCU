@@ -1,0 +1,50 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: backend
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: backend
+  template:
+    metadata:
+      labels:
+        app: backend
+    spec:
+      containers:
+        - name: backend
+          image: tiangolo/uwsgi-nginx-flask:python3.8
+          imagePullPolicy: IfNotPresent
+          command: ["uwsgi"]
+          args:
+            [
+              "--http-socket", "0.0.0.0:5000",
+              "--wsgi-file", "app.py",
+              "--callable", "app",
+              "--master",
+              "--processes", "4",
+              "--threads", "2",
+              "--disable-logging",
+              "--vacuum"
+            ]
+          env:
+            - name: MYSQL_HOST
+              value: mysql
+            - name: MYSQL_DATABASE
+              valueFrom:
+                configMapKeyRef:
+                  name: app-config
+                  key: MYSQL_DATABASE
+            - name: MYSQL_USER
+              valueFrom:
+                configMapKeyRef:
+                  name: app-config
+                  key: MYSQL_USER
+            - name: MYSQL_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: app-secrets
+                  key: MYSQL_PASSWORD
+          ports:
+            - containerPort: 5000

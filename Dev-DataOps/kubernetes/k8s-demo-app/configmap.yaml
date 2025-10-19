@@ -1,0 +1,17 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: app-config
+data:
+  MYSQL_DATABASE: exampledb
+  MYSQL_USER: exampleuser
+  FLASK_ENV: development
+  nginx.conf: |
+    server {
+      listen 80;
+      location / {
+        proxy_pass http://backend:5000;
+        proxy_set_header Host $host;
+        proxy_set_header X-Real-IP $remote_addr;
+      }
+    }
