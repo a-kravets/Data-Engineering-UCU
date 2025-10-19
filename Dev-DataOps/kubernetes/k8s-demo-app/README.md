@@ -1,4 +1,4 @@
-# Readme prelim
+# Python/Flask with Nginx proxy and MySQL database from [Awesome Compose](https://github.com/docker/awesome-compose/tree/master/nginx-flask-mysql) converted to Kubernetes
 
 * `minikube start`
 
