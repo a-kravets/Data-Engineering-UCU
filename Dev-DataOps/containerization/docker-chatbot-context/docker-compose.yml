@@ -1,6 +1,20 @@
 version: "3.9"
 
 services:
+  ollama:
+    image: ollama/ollama:0.3.14
+    container_name: ollama
+    entrypoint: ["/bin/bash", "-c"]
+    command: >
+      "ollama serve & sleep 10 && ollama pull gemma:2b && wait"
+    ports:
+      - "11434:11434"
+    volumes:
+      - ollama_models:/root/.ollama
+    networks:
+      - chatbot_net
+    restart: unless-stopped
+
   web:
     build:
       context: .
@@ -15,19 +29,6 @@ services:
       - ollama
     networks:
       - chatbot_net
-
-  ollama:
-    build:
-      context: ./ollama
-      dockerfile: Dockerfile
-    container_name: ollama
-    ports:
-      - "11434:11434"      # expose for testing, safe to remove later
-    networks:
-      - chatbot_net
-    restart: unless-stopped
-    volumes:
-      - ollama_models:/root/.ollama
 
 networks:
   chatbot_net:

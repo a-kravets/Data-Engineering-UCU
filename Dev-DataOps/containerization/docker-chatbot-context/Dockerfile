@@ -1,6 +1,6 @@
 FROM python:3.10-slim
 WORKDIR /app
-RUN pip install --no-cache-dir streamlit requests 
+RUN pip install --no-cache-dir streamlit requests scikit-learn
 #deep_translator scikit-learn
 COPY . /app
 EXPOSE 8050
