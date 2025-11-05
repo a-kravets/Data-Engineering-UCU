@@ -6,7 +6,7 @@ services:
     container_name: ollama
     entrypoint: ["/bin/bash", "-c"]
     command: >
-      "ollama serve & sleep 10 && ollama pull gemma:2b && wait"
+      "ollama serve & sleep 10 && (ollama list | grep -q gemma:2b || ollama pull gemma:2b) && wait"
     ports:
       - "11434:11434"
     volumes:
