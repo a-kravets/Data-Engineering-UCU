@@ -1,0 +1,37 @@
+version: "3.9"
+
+services:
+  web:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: web-ui
+    ports:
+      - "8050:8050"
+    environment:
+      - OLLAMA_API_URL=http://ollama:11434/api/chat
+      - OLLAMA_MODEL=gemma:2b
+    depends_on:
+      - ollama
+    networks:
+      - chatbot_net
+
+  ollama:
+    build:
+      context: ./ollama
+      dockerfile: Dockerfile
+    container_name: ollama
+    ports:
+      - "11434:11434"      # expose for testing, safe to remove later
+    networks:
+      - chatbot_net
+    restart: unless-stopped
+    volumes:
+      - ollama_models:/root/.ollama
+
+networks:
+  chatbot_net:
+    driver: bridge
+
+volumes:
+  ollama_models:
