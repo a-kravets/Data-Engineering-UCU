@@ -1,0 +1,10 @@
+jaffle-shop:
+  target: dev
+  outputs:
+    dev:
+      type: bigquery
+      method: service-account
+      project: data-engineering-ucu-2025
+      dataset: dbt_jaffle_shop # You can also use "schema" here
+      threads: 4 # Must be a value of 1 or greater
+      keyfile: "./keys/creds.json"
