@@ -1,0 +1,55 @@
+version: "3.9"
+
+services:
+  master:
+    build:
+      context: .
+      dockerfile: Dockerfile.master
+    container_name: repl_master
+    environment:
+      - REPLICATE_TIMEOUT_SEC=50
+      - MASTER_WRITE_TIMEOUT_SEC=300
+      - HEARTBEAT_INTERVAL_SEC=5
+      - HEARTBEAT_THRESHOLD=3
+    ports:
+      - "5000:5000"
+    networks:
+      - repl_net
+
+  secondary_fast:
+    build:
+      context: .
+      dockerfile: Dockerfile.secondary
+    environment:
+      - MASTER_URL=http://master:5000
+      - SECONDARY_DELAY=0
+      - SECONDARY_ERR_RATE=0.0
+      - SECONDARY_PORT=5001
+      - SECONDARY_ID=secondary_fast
+    ports:
+      - "5001:5001"
+    networks:
+      - repl_net
+    depends_on:
+      - master
+
+  secondary_slow:
+    build:
+      context: .
+      dockerfile: Dockerfile.secondary
+    environment:
+      - MASTER_URL=http://master:5000
+      - SECONDARY_DELAY=10
+      - SECONDARY_ERR_RATE=0.1
+      - SECONDARY_PORT=5001
+      - SECONDARY_ID=secondary_slow
+    ports:
+      - "5002:5001"
+    networks:
+      - repl_net
+    depends_on:
+      - master
+
+networks:
+  repl_net:
+    driver: bridge
